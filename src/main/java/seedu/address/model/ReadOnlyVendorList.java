@@ -6,7 +6,7 @@ import seedu.address.model.vendor.Vendor;
 /**
  * Unmodifiable view of an address book
  */
-public interface ReadOnlyAddressBook {
+public interface ReadOnlyVendorList {
 
     /**
      * Returns an unmodifiable view of the vendors list.

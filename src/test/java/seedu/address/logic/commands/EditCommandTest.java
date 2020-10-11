@@ -9,7 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.showVendorAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_VENDOR;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_VENDOR;
-import static seedu.address.testutil.TypicalVendors.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalVendors.getTypicalVendorBook;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ import seedu.address.testutil.EditVendorDescriptorBuilder;
  */
 public class EditCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalVendorBook(), new UserPrefs());
 
     //TODO: pass
     //    @Test
@@ -111,7 +111,7 @@ public class EditCommandTest {
         showVendorAtIndex(model, INDEX_FIRST_VENDOR);
 
         // edit vendor in filtered list into a duplicate in address book
-        Vendor vendorInList = model.getAddressBook().getVendorList().get(INDEX_SECOND_VENDOR.getZeroBased());
+        Vendor vendorInList = model.getVendorList().getVendorList().get(INDEX_SECOND_VENDOR.getZeroBased());
         EditCommand editCommand = new EditCommand(INDEX_FIRST_VENDOR,
                 new EditVendorDescriptorBuilder(vendorInList).build());
 
@@ -136,7 +136,7 @@ public class EditCommandTest {
         showVendorAtIndex(model, INDEX_FIRST_VENDOR);
         Index outOfBoundIndex = INDEX_SECOND_VENDOR;
         // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getVendorList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getVendorList().getVendorList().size());
 
         EditCommand editCommand = new EditCommand(outOfBoundIndex,
                 new EditVendorDescriptorBuilder().withName(VALID_NAME_BOB).build());

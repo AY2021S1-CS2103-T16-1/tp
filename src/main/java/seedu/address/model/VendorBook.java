@@ -12,7 +12,7 @@ import seedu.address.model.vendor.Vendor;
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSamePerson comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class VendorBook implements ReadOnlyVendorList {
 
     private final UniqueVendorList vendors;
     /*
@@ -26,12 +26,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         vendors = new UniqueVendorList();
     }
 
-    public AddressBook() {}
+    public VendorBook() {}
 
     /**
      * Creates an AddressBook using the Vendors in the {@code toBeCopied}
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public VendorBook(ReadOnlyVendorList toBeCopied) {
         this();
         resetData(toBeCopied);
     }
@@ -50,7 +50,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyVendorList newData) {
         requireNonNull(newData);
         setVendors(newData.getVendorList());
     }
@@ -108,8 +108,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddressBook // instanceof handles nulls
-                && vendors.equals(((AddressBook) other).vendors));
+                || (other instanceof VendorBook // instanceof handles nulls
+                && vendors.equals(((VendorBook) other).vendors));
     }
 
     @Override

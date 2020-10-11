@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import seedu.address.model.AddressBook;
+import seedu.address.model.VendorBook;
 import seedu.address.model.vendor.Vendor;
 
 /**
@@ -62,8 +62,8 @@ public class TypicalVendors {
     /**
      * Returns an {@code AddressBook} with all the typical Vendors.
      */
-    public static AddressBook getTypicalAddressBook() {
-        AddressBook ab = new AddressBook();
+    public static VendorBook getTypicalVendorBook() {
+        VendorBook ab = new VendorBook();
         for (Vendor vendor : getTypicalVendors()) {
             ab.addVendor(vendor);
         }

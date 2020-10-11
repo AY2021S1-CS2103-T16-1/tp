@@ -1,15 +1,25 @@
 package seedu.address.storage;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.food.Food;
+import seedu.address.model.menu.Menu;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.vendor.Address;
 import seedu.address.model.vendor.Email;
@@ -29,7 +39,7 @@ class JsonAdaptedVendor {
     private final String email;
     private final String address;
     private final List<JsonAdaptedTag> tagged = new ArrayList<>();
-    private final String menu;
+    private Menu menu = new Menu();
 
     /**
      * Constructs a {@code JsonAdaptedVendor} with the given vendor details.
@@ -37,7 +47,7 @@ class JsonAdaptedVendor {
     @JsonCreator
     public JsonAdaptedVendor(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("tagged") List<JsonAdaptedTag> tagged) {
+            @JsonProperty("tagged") List<JsonAdaptedTag> tagged, @JsonProperty("menu") List<JsonAdaptedFood> menu) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -46,7 +56,16 @@ class JsonAdaptedVendor {
             this.tagged.addAll(tagged);
         }
         //TODO add a json version of menu
-        this.menu = null;
+        List<Food> foodList = menu.stream().map(food -> {
+            try {
+                return food.toModelType();
+            } catch (IllegalValueException e){
+                e.printStackTrace();
+            }
+            return null;
+        }).collect(Collectors.toList());
+        this.menu.setFoods(foodList);
+        System.out.println(this.menu);
     }
 
     /**
@@ -60,7 +79,7 @@ class JsonAdaptedVendor {
         tagged.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
-        menu = null;
+        menu = source.getMenu();
         //TODO add a value in menu
     }
 
@@ -71,6 +90,7 @@ class JsonAdaptedVendor {
      */
     public Vendor toModelType() throws IllegalValueException {
         final List<Tag> vendorTags = new ArrayList<>();
+
         for (JsonAdaptedTag tag : tagged) {
             vendorTags.add(tag.toModelType());
         }
@@ -105,12 +125,15 @@ class JsonAdaptedVendor {
         if (!Address.isValidAddress(address)) {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         }
+        if (menu == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "menu"));
+        }
         final Address modelAddress = new Address(address);
 
         final Set<Tag> modelTags = new HashSet<>(vendorTags);
 
         //TODO: check the menu
-        return new Vendor(modelName, modelPhone, modelEmail, modelAddress, modelTags, null);
+        return new Vendor(modelName, modelPhone, modelEmail, modelAddress, modelTags, menu);
     }
 
 }

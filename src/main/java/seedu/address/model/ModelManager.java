@@ -24,7 +24,7 @@ import seedu.address.model.vendor.Vendor;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private final VendorBook vendorList;
     private final List<MenuManager> menuManagers;
     private final UserPrefs userPrefs;
     private final FilteredList<Vendor> filteredVendors;
@@ -32,36 +32,36 @@ public class ModelManager implements Model {
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
+    public ModelManager(ReadOnlyVendorList vendorList, ReadOnlyUserPrefs userPrefs) {
         super();
-        requireAllNonNull(addressBook, userPrefs);
+        requireAllNonNull(vendorList, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + vendorList + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.vendorList = new VendorBook(vendorList);
         this.menuManagers = new ArrayList<>();
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredVendors = new FilteredList<>(this.addressBook.getVendorList());
+        filteredVendors = new FilteredList<>(this.vendorList.getVendorList());
 
     }
 
     /**
      * Initializes a ModelManager with the given addressBook, userPrefs and menuManager.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs, List<MenuManager> menuManagers) {
+    public ModelManager(ReadOnlyVendorList vendorList, ReadOnlyUserPrefs userPrefs, List<MenuManager> menuManagers) {
         super();
-        requireAllNonNull(addressBook, userPrefs, menuManagers);
+        requireAllNonNull(vendorList, userPrefs, menuManagers);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + vendorList + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.vendorList = new VendorBook(vendorList);
         this.userPrefs = new UserPrefs(userPrefs);
         this.menuManagers = menuManagers;
-        filteredVendors = new FilteredList<>(this.addressBook.getVendorList());
+        filteredVendors = new FilteredList<>(this.vendorList.getVendorList());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs(), new ArrayList<>());
+        this(new VendorBook(), new UserPrefs(), new ArrayList<>());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -89,14 +89,14 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public Path getAddressBookFilePath() {
-        return userPrefs.getAddressBookFilePath();
+    public Path getVendorListFilePath() {
+        return userPrefs.getVendorListFilePath();
     }
 
     @Override
-    public void setAddressBookFilePath(Path addressBookFilePath) {
-        requireNonNull(addressBookFilePath);
-        userPrefs.setAddressBookFilePath(addressBookFilePath);
+    public void setVendorListFilePath(Path vendorListFilePath) {
+        requireNonNull(vendorListFilePath);
+        userPrefs.setAddressBookFilePath(vendorListFilePath);
     }
 
     @Override
@@ -114,29 +114,29 @@ public class ModelManager implements Model {
     //=========== AddressBook ================================================================================
 
     @Override
-    public void setAddressBook(ReadOnlyAddressBook addressBook) {
-        this.addressBook.resetData(addressBook);
+    public void setVendorList(ReadOnlyVendorList addressBook) {
+        this.vendorList.resetData(addressBook);
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public ReadOnlyVendorList getVendorList() {
+        return vendorList;
     }
 
     @Override
     public boolean hasVendor(Vendor vendor) {
         requireNonNull(vendor);
-        return addressBook.hasVendor(vendor);
+        return vendorList.hasVendor(vendor);
     }
 
     @Override
     public void deleteVendor(Vendor target) {
-        addressBook.removeVendor(target);
+        vendorList.removeVendor(target);
     }
 
     @Override
     public void addVendor(Vendor vendor) {
-        addressBook.addVendor(vendor);
+        vendorList.addVendor(vendor);
         updateFilteredVendorList(PREDICATE_SHOW_ALL_VENDORS);
     }
 
@@ -144,7 +144,7 @@ public class ModelManager implements Model {
     public void setVendor(Vendor target, Vendor editedVendor) {
         requireAllNonNull(target, editedVendor);
 
-        addressBook.setVendor(target, editedVendor);
+        vendorList.setVendor(target, editedVendor);
     }
 
     @Override
@@ -228,7 +228,7 @@ public class ModelManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return addressBook.equals(other.addressBook)
+        return vendorList.equals(other.vendorList)
                 && userPrefs.equals(other.userPrefs)
                 && filteredVendors.equals(other.filteredVendors);
     }

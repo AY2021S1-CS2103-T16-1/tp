@@ -7,7 +7,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalVendors.ALICE;
-import static seedu.address.testutil.TypicalVendors.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalVendors.getTypicalVendorBook;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,25 +22,25 @@ import seedu.address.model.vendor.Vendor;
 import seedu.address.model.vendor.exceptions.DuplicateVendorException;
 import seedu.address.testutil.VendorBuilder;
 
-public class AddressBookTest {
+public class VendorBookTest {
 
-    private final AddressBook addressBook = new AddressBook();
+    private final VendorBook vendorList = new VendorBook();
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), addressBook.getVendorList());
+        assertEquals(Collections.emptyList(), vendorList.getVendorList());
     }
 
     @Test
     public void resetData_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> addressBook.resetData(null));
+        assertThrows(NullPointerException.class, () -> vendorList.resetData(null));
     }
 
     @Test
-    public void resetData_withValidReadOnlyAddressBook_replacesData() {
-        AddressBook newData = getTypicalAddressBook();
-        addressBook.resetData(newData);
-        assertEquals(newData, addressBook);
+    public void resetData_withValidReadOnlyVendorList_replacesData() {
+        VendorBook newData = getTypicalVendorBook();
+        vendorList.resetData(newData);
+        assertEquals(newData, vendorList);
     }
 
     @Test
@@ -51,42 +51,42 @@ public class AddressBookTest {
         List<Vendor> newVendors = Arrays.asList(ALICE, editedAlice);
         AddressBookStub newData = new AddressBookStub(newVendors);
 
-        assertThrows(DuplicateVendorException.class, () -> addressBook.resetData(newData));
+        assertThrows(DuplicateVendorException.class, () -> vendorList.resetData(newData));
     }
 
     @Test
     public void hasVendor_nullVendor_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> addressBook.hasVendor(null));
+        assertThrows(NullPointerException.class, () -> vendorList.hasVendor(null));
     }
 
     @Test
     public void hasVendor_vendorNotInAddressBook_returnsFalse() {
-        assertFalse(addressBook.hasVendor(ALICE));
+        assertFalse(vendorList.hasVendor(ALICE));
     }
 
     @Test
     public void hasVendor_vendorInAddressBook_returnsTrue() {
-        addressBook.addVendor(ALICE);
-        assertTrue(addressBook.hasVendor(ALICE));
+        vendorList.addVendor(ALICE);
+        assertTrue(vendorList.hasVendor(ALICE));
     }
 
     @Test
     public void hasVendor_vendorWithSameIdentityFieldsInAddressBook_returnsTrue() {
-        addressBook.addVendor(ALICE);
+        vendorList.addVendor(ALICE);
         Vendor editedAlice = new VendorBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
-        assertTrue(addressBook.hasVendor(editedAlice));
+        assertTrue(vendorList.hasVendor(editedAlice));
     }
 
     @Test
     public void getVendorList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> addressBook.getVendorList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () -> vendorList.getVendorList().remove(0));
     }
 
     /**
      * A stub ReadOnlyAddressBook whose vendors list can violate interface constraints.
      */
-    private static class AddressBookStub implements ReadOnlyAddressBook {
+    private static class AddressBookStub implements ReadOnlyVendorList {
         private final ObservableList<Vendor> vendors = FXCollections.observableArrayList();
 
         AddressBookStub(Collection<Vendor> vendors) {

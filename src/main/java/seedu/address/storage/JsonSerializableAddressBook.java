@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.AddressBook;
-import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyVendorList;
+import seedu.address.model.VendorBook;
 import seedu.address.model.vendor.Vendor;
 
 /**
@@ -36,7 +36,7 @@ class JsonSerializableAddressBook {
      *
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
-    public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
+    public JsonSerializableAddressBook(ReadOnlyVendorList source) {
         vendors.addAll(source.getVendorList().stream().map(JsonAdaptedVendor::new).collect(Collectors.toList()));
     }
 
@@ -45,16 +45,16 @@ class JsonSerializableAddressBook {
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */
-    public AddressBook toModelType() throws IllegalValueException {
-        AddressBook addressBook = new AddressBook();
+    public VendorBook toModelType() throws IllegalValueException {
+        VendorBook vendorList = new VendorBook();
         for (JsonAdaptedVendor jsonAdaptedVendor : vendors) {
             Vendor vendor = jsonAdaptedVendor.toModelType();
-            if (addressBook.hasVendor(vendor)) {
+            if (vendorList.hasVendor(vendor)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_VENDOR);
             }
-            addressBook.addVendor(vendor);
+            vendorList.addVendor(vendor);
         }
-        return addressBook;
+        return vendorList;
     }
 
 }

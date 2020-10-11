@@ -42,12 +42,12 @@ public interface Model {
     /**
      * Returns the user prefs' address book file path.
      */
-    Path getAddressBookFilePath();
+    Path getVendorListFilePath();
 
     /**
      * Sets the user prefs' menu manager file path.
      */
-    void setAddressBookFilePath(Path addressBookFilePath);
+    void setVendorListFilePath(Path addressBookFilePath);
 
     /**
      * Returns the user prefs' address book file path.
@@ -63,10 +63,10 @@ public interface Model {
      * Replaces menu manager data with the data in {@code menuManager}.
      */
 
-    void setAddressBook(ReadOnlyAddressBook addressBook);
+    void setVendorList(ReadOnlyVendorList vendorList);
 
-    /** Returns the AddressBook */
-    ReadOnlyAddressBook getAddressBook();
+    /** Returns the Vendor List */
+    ReadOnlyVendorList getVendorList();
 
     /**
      * Returns true if a vendor with the same identity as {@code vendor} exists in the address book.
