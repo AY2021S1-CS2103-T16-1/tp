@@ -1,23 +1,15 @@
 package seedu.address.storage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.food.Food;
 import seedu.address.model.menu.Menu;
 import seedu.address.model.tag.Tag;
@@ -59,7 +51,7 @@ class JsonAdaptedVendor {
         List<Food> foodList = menu.stream().map(food -> {
             try {
                 return food.toModelType();
-            } catch (IllegalValueException e){
+            } catch (IllegalValueException e) {
                 e.printStackTrace();
             }
             return null;
@@ -80,7 +72,6 @@ class JsonAdaptedVendor {
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
         menu = source.getMenu();
-        //TODO add a value in menu
     }
 
     /**
@@ -135,5 +126,4 @@ class JsonAdaptedVendor {
         //TODO: check the menu
         return new Vendor(modelName, modelPhone, modelEmail, modelAddress, modelTags, menu);
     }
-
 }

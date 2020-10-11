@@ -137,7 +137,7 @@ public class Menu implements Iterable<Food> {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return internalList.toString();
     }
 }

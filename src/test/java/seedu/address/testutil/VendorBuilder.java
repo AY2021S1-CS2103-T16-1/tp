@@ -1,8 +1,10 @@
 package seedu.address.testutil;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import seedu.address.model.food.Food;
 import seedu.address.model.menu.Menu;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -50,6 +52,7 @@ public class VendorBuilder {
         email = vendorToCopy.getEmail();
         address = vendorToCopy.getAddress();
         tags = new HashSet<>(vendorToCopy.getTags());
+        menu = vendorToCopy.getMenu();
         //TODO: MENU
     }
 
@@ -96,8 +99,8 @@ public class VendorBuilder {
     /**
      * Sets the {@code Name} of the {@code Vendor} that we are building.
      */
-    public VendorBuilder withMenu(Menu menu) {
-        this.menu = menu;
+    public VendorBuilder withMenu(List<Food> foods) {
+        this.menu.setFoods(foods);
         return this;
     }
 
